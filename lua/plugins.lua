@@ -56,5 +56,7 @@ require("lazy").setup({
 		version = "v2.*",
 	},
     "tanvirtin/monokai.nvim",
+    -- Comments
+    "numToStr/Comment.nvim",
 })
 
