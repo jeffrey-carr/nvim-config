@@ -22,10 +22,12 @@ require("lazy").setup({
     "nvim-tree/nvim-web-devicons",
     {
         "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim"},
         config = function()
             -- This ensures telescope is configured right after it's loaded
             require("keymaps")  -- You can load keymaps after telescope is loaded
-        end,
+            require("telescope").setup()
+       end,
     },
     -- LSP manager
 	"williamboman/mason.nvim",
@@ -58,5 +60,30 @@ require("lazy").setup({
     "tanvirtin/monokai.nvim",
     -- Comments
     "numToStr/Comment.nvim",
+    -- git blame stuff
+    {
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require("gitsigns").setup()
+        end
+    },
+    -- Auto-complete brackets
+    {
+        "m4xshen/autoclose.nvim",
+        config = function()
+            require("autoclose").setup()
+        end
+    },
+    -- surround
+    {
+        "kylechui/nvim-surround",
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
+    }
 })
 

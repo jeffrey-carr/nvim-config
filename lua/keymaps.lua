@@ -47,4 +47,7 @@ end, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', function()
     require('telescope.builtin').help_tags()
 end, { desc = 'Telescope help tags' })
+vim.keymap.set('n', '<leader>fs', function()
+    require('telescope.builtin').lsp_document_symbols()
+end, { desc = 'Telescope find symbols' })
 

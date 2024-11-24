@@ -30,15 +30,10 @@ local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    if client.name == "rust_analyzer" then
-        -- Requires Neovim 0.10 or later
-        vim.lsp.inlay_hint.enable()
-    end
+    -- Check and safely unmap <C-k> for LSP buffers
+    pcall(vim.keymap.del, "n", "<C-k>", { buffer = bufnr })
 
-    -- Unmap Ctrl-k for LSP buffers
-    vim.keymap.del("n", "<C-k>", { buffer = bufnr })
-
-    -- Add LSP-specific mappings
+    -- Add other LSP mappings
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
@@ -58,16 +53,46 @@ local on_attach = function(client, bufnr)
         vim.lsp.buf.format({
             async = true,
             filter = function(client)
-                -- If an LSP contains a formatter, use that instead of null-ls.
                 return client.name == "null-ls" or client.name == "hls" or client.name == "rust_analyzer"
             end,
         })
     end, bufopts)
+
+    -- gopls settings
+    if client.name == 'gopls' then
+        client.server_capabilities.semanticTokensProvider = {
+            full = true,
+            legend = {
+                tokenTypes = { 'namespace', 'type', 'class', 'enum', 'interface', 'struct', 'typeParameter', 'parameter', 'variable', 'property', 'enumMember', 'event', 'function', 'method', 'macro', 'keyword', 'modifier', 'comment', 'string', 'number', 'regexp', 'operator', 'decorator' },
+                tokenModifiers = { 'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async', 'modification', 'documentation', 'defaultLibrary'}
+            },
+        }
+    end
 end
 
 -- Configure language servers
 lspconfig.pylsp.setup({ on_attach = on_attach })
-lspconfig.gopls.setup({ on_attach = on_attach })
+lspconfig.gopls.setup({
+    on_attach = on_attach,
+    settings = {
+        gopls = {
+            semanticTokens = true,
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
+            hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+            },
+        }
+    }
+ })
 lspconfig.lua_ls.setup({
     on_attach = on_attach,
     settings = {
@@ -84,3 +109,4 @@ lspconfig.eslint.setup({ on_attach = on_attach })
 lspconfig.html.setup({ on_attach = on_attach })
 lspconfig.nextls.setup({ on_attach = on_attach })
 lspconfig.ts_ls.setup({ on_attach = on_attach })
+
