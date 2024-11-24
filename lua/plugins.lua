@@ -26,7 +26,7 @@ require("lazy").setup({
             -- This ensures telescope is configured right after it's loaded
             require("keymaps")  -- You can load keymaps after telescope is loaded
         end,
-    }
+    },
     -- LSP manager
 	"williamboman/mason.nvim",
 	"williamboman/mason-lspconfig.nvim",
