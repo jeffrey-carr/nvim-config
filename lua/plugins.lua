@@ -91,12 +91,14 @@ require("lazy").setup({
         main = "ibl",
         ---@module "ibl"
         ---@type ibl.config
-        opts = {},
+        opts = {
+          indent = { char = "|" }
+        },
     },
     {
       "klen/nvim-test",
       config = function()
-          require("nvim-test").setup()
+          require("nvim-test").setup({})
       end
     },
 })
