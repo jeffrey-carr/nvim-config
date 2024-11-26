@@ -51,3 +51,10 @@ vim.keymap.set('n', '<leader>fs', function()
     require('telescope.builtin').lsp_document_symbols()
 end, { desc = 'Telescope find symbols' })
 
+----------------
+-- Tests --
+----------------
+vim.keymap.set('n', '<leader>tn', function()
+    require('nvim-test').run("nearest")
+end, { desc = 'Run nearest test' })
+

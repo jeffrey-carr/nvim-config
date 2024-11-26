@@ -84,6 +84,20 @@ require("lazy").setup({
                 -- Configuration here, or leave empty to use defaults
             })
         end
-    }
+    },
+    -- Indentation markers
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        ---@module "ibl"
+        ---@type ibl.config
+        opts = {},
+    },
+    {
+      "klen/nvim-test",
+      config = function()
+          require("nvim-test").setup()
+      end
+    },
 })
 
