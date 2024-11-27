@@ -60,6 +60,19 @@ local on_attach = function(client, bufnr)
     -- Show signature hints
     vim.keymap.set("n", "<C-Space", vim.lsp.buf.signature_help, { desc="Signature hint"})
 
+    -- Keymaps for renaming variables
+    vim.keymap.set('n', '<leader>rn', function()
+        local curr_word = vim.fn.expand('<cword>')
+        local new_name = vim.fn.input('Rename "' .. curr_word .. '" to: ')
+
+        -- Proceed only if a new name is provided
+        if new_name and new_name ~= '' then
+            vim.lsp.buf.rename(new_name)
+        else
+            print("Rename canceled.")
+        end
+    end, { noremap = true, silent = true, desc = "Global Rename" })
+
     -- gopls settings
     if client.name == 'gopls' then
         client.server_capabilities.semanticTokensProvider = {

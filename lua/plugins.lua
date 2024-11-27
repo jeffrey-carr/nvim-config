@@ -18,7 +18,20 @@ require("lazy").setup({
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release',
     },
-    "nvim-treesitter/nvim-treesitter",
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function ()
+            local configs = require("nvim-treesitter.configs")
+
+            configs.setup({
+                ensure_installed = {"go", "javascript"},
+                sync_install = false,
+                highlight = { enable = true },
+                indent = { enable = true },
+            })
+        end
+    },
     "nvim-tree/nvim-web-devicons",
     {
         "nvim-telescope/telescope.nvim",
@@ -108,6 +121,8 @@ require("lazy").setup({
       config = function()
           require("dooing").setup({})
       end
-    }
+    },
+    -- Rainbow delimiters
+    "HiPhish/rainbow-delimiters.nvim",
 })
 
