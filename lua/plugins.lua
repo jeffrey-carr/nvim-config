@@ -95,11 +95,19 @@ require("lazy").setup({
           indent = { char = "|" }
         },
     },
+    -- Tests
     {
       "klen/nvim-test",
       config = function()
           require("nvim-test").setup({})
       end
     },
+    -- Todo list
+    {
+      "atiladefreitas/dooing",
+      config = function()
+          require("dooing").setup({})
+      end
+    }
 })
 
