@@ -58,3 +58,10 @@ vim.keymap.set('n', '<leader>tn', function()
     require('nvim-test').run("nearest")
 end, { desc = 'Run nearest test' })
 
+----------------
+-- Zen Mode --
+----------------
+vim.keymap.set('n', '<leader>zm', function()
+    require('zen-mode').toggle({})
+end, { desc = 'Enter Zen mode' })
+

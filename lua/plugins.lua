@@ -25,7 +25,7 @@ require("lazy").setup({
             local configs = require("nvim-treesitter.configs")
 
             configs.setup({
-                ensure_installed = {"go", "javascript"},
+                ensure_installed = {"go", "javascript", "html", "tsx"},
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -124,5 +124,23 @@ require("lazy").setup({
     },
     -- Rainbow delimiters
     "HiPhish/rainbow-delimiters.nvim",
+    -- Zen mode 
+    {
+        "folke/twilight.nvim",
+        opts = {},
+    },
+    {
+        "folke/zen-mode.nvim",
+        opts = {},
+    },
+    -- Auto complete HTML tags
+    {
+        "windwp/nvim-ts-autotag",
+        config = function()
+            require("nvim-ts-autotag").setup({})
+        end
+    },
+    -- Auto formatter
+    "sbdchd/neoformat",
 })
 
