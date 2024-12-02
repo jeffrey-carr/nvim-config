@@ -1,13 +1,13 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -25,8 +25,7 @@ require("lazy").setup({
             local configs = require("nvim-treesitter.configs")
 
             configs.setup({
-                ensure_installed = {"go", "javascript", "html", "tsx"},
-                sync_install = false,
+                ensure_installed = "all",
                 highlight = { enable = true },
                 indent = { enable = true },
             })
@@ -40,37 +39,36 @@ require("lazy").setup({
             -- This ensures telescope is configured right after it's loaded
             require("keymaps")  -- You can load keymaps after telescope is loaded
             require("telescope").setup()
-       end,
+        end,
     },
     -- LSP manager
-	"williamboman/mason.nvim",
-	"williamboman/mason-lspconfig.nvim",
-	"neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
     -- Vscode-like pictograms
-	{
-		"onsails/lspkind.nvim",
-		event = { "VimEnter" },
-	},
-	-- Auto-completion engine
-	{
-		"hrsh7th/nvim-cmp",
-		dependencies = {
-			"lspkind.nvim",
-			"hrsh7th/cmp-nvim-lsp", -- lsp auto-completion
-			"hrsh7th/cmp-buffer", -- buffer auto-completion
-			"hrsh7th/cmp-path", -- path auto-completion
-			"hrsh7th/cmp-cmdline", -- cmdline auto-completion
-		},
-		config = function()
-			require("config.nvim-cmp")
-		end,
-	},
-	-- Code snippet engine
-	{
-		"L3MON4D3/LuaSnip",
-		version = "v2.*",
-	},
-    "tanvirtin/monokai.nvim",
+    {
+        "onsails/lspkind.nvim",
+        event = { "VimEnter" },
+    },
+    -- Auto-completion engine
+    {
+        "hrsh7th/nvim-cmp",
+        dependencies = {
+            "lspkind.nvim",
+            "hrsh7th/cmp-nvim-lsp", -- lsp auto-completion
+            "hrsh7th/cmp-buffer", -- buffer auto-completion
+            "hrsh7th/cmp-path", -- path auto-completion
+            "hrsh7th/cmp-cmdline", -- cmdline auto-completion
+        },
+        config = function()
+            require("config.nvim-cmp")
+        end,
+    },
+    -- Code snippet engine
+    {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+    },
     -- Comments
     "numToStr/Comment.nvim",
     -- git blame stuff
@@ -105,22 +103,17 @@ require("lazy").setup({
         ---@module "ibl"
         ---@type ibl.config
         opts = {
-          indent = { char = "|" }
+            indent = { char = "|" }
         },
     },
     -- Tests
-    {
-      "klen/nvim-test",
-      config = function()
-          require("nvim-test").setup({})
-      end
-    },
+    "fatih/vim-go",
     -- Todo list
     {
-      "atiladefreitas/dooing",
-      config = function()
-          require("dooing").setup({})
-      end
+        "atiladefreitas/dooing",
+        config = function()
+            require("dooing").setup({})
+        end
     },
     -- Rainbow delimiters
     "HiPhish/rainbow-delimiters.nvim",
@@ -142,5 +135,25 @@ require("lazy").setup({
     },
     -- Auto formatter
     "sbdchd/neoformat",
+    -- Notifications
+    {
+        "rcarriga/nvim-notify",
+        config = function()
+            require("notify")
+        end
+    },
+    -- Themes
+    "tanvirtin/monokai.nvim",
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+        config = function()
+            require("tokyonight").setup({
+                style = "storm",
+            })
+        end
+    },
 })
 

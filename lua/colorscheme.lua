@@ -1,9 +1,16 @@
 -- define your colorscheme here
-local colorscheme = 'monokai_pro'
-
-local is_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
-if not is_ok then
-    vim.notify('colorscheme ' .. colorscheme .. ' not found!')
-    return
+-- the order of this array is the order they'll be applied. As soon as one is 
+-- found the loop quits
+local colorschemes = {
+    "tokyonight",
+    "monokai_pro",
+}
+for _, scheme in ipairs(colorschemes) do
+    local is_ok, _ = pcall(vim.cmd, "colorscheme " .. scheme)
+    if is_ok then
+        return
+    end
 end
+
+vim.notify("Could not find applicable color scheme", vim.log.levels.ERROR)
 
