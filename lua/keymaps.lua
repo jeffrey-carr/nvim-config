@@ -9,6 +9,7 @@ local opts = {
 -----------------
 -- Set 'signature_help' to Ctrl-Shift-K
 vim.keymap.set('n', '<C-S-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = 'Show LSP signature help' })
+vim.keymap.set('n', '<leader>sv', ':vsplit <CR>', opts)
 
 -- Hint: see `:h vim.map.set()`
 -- Better window navigation
@@ -19,8 +20,8 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
 
 -- Resize with arrows
 -- delta: 2 lines
-vim.keymap.set('n', '<C-Up>', ':resize -2<CR>', opts)
-vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', opts)
+vim.keymap.set('n', '<C-Shift-Up>', ':resize -2<CR>', opts)
+vim.keymap.set('n', '<C-Shift-Down>', ':resize +2<CR>', opts)
 vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', opts)
 vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 
@@ -50,13 +51,14 @@ end, { desc = 'Telescope help tags' })
 vim.keymap.set('n', '<leader>fs', function()
     require('telescope.builtin').lsp_document_symbols()
 end, { desc = 'Telescope find symbols' })
+vim.keymap.set('n', '<leader>fr', function()
+    require('telescope.builtin').lsp_references()
+end, { desc = 'Telescope find references' })
 
 ----------------
 -- Tests --
 ----------------
-vim.keymap.set('n', '<leader>tn', function()
-    require('nvim-test').run("nearest")
-end, { desc = 'Run nearest test' })
+vim.keymap.set('n', '<leader>tn', ':GoTestFunc <CR>', opts)
 
 ----------------
 -- Zen Mode --

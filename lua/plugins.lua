@@ -143,79 +143,138 @@ require("lazy").setup({
         end
     },
     -- Lualine
-    "nvim-tree/nvim-web-devicons",
-    {
-        "nvim-lualine/lualine.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VeryLazy",
+    { 
+        "nvimdev/nerdicons.nvim",
+        cmd = "NerdIcons",
         config = function()
-            -- Custom Lualine component to show attached language server
-            -- local clients_lsp = function()
-            --     local clients = vim.lsp.get_clients()
-            --     if next(clients) == nil then
-            --         return ""
-            --     end
-            --
-            --     local c = {}
-            --     for _, client in pairs(clients) do
-            --         table.insert(c, client.name)
-            --     end
-            --     return " " .. table.concat(c, "|")
-            -- end
-
-            require("lualine").setup({
-                -- options = {
-                --     theme = "dracula",
-                --     component_separators = "",
-                --     section_separators = { left = "AHHHHh", right = "" },
-                --     disabled_filetypes = { "alpha", "Outline" },
-                -- },
-                -- sections = {
-                --     lualine_a = {
-                --         { "mode", separator = { left = " ", right = "" }, icon = "" },
-                --     },
-                --     lualine_b = {
-                --         {
-                --             "filetype",
-                --             icon_only = true,
-                --             padding = { left = 1, right = 0 },
-                --         },
-                --         "filename",
-                --     },
-                --     lualine_c = {
-                --         {
-                --             "branch",
-                --             icon = "?",
-                --         },
-                --         {
-                --             "diff",
-                --             symbols = { added = " ", modified = " ", removed = " " },
-                --             colored = false,
-                --         },
-                --     },
-                --     lualine_x = {
-                --         {
-                --             "diagnostics",
-                --             symbols = { error = " ", warn = " ", info = " ", hint = "" },
-                --             update_in_insert = true,
-                --         },
-                --     },
-                --     lualine_y = { clients_lsp },
-                --     lualine_z = {
-                --         { "location", separator = { left = "", right = " " }, icon = "" },
-                --     },
-                -- },
-                -- inactive_sections = {
-                --     lualine_a = { "filename" },
-                --     lualine_b = {},
-                --     lualine_c = {},
-                --     lualine_x = {},
-                --     lualine_y = {},
-                --     lualine_z = { "location" },
-                -- },
-                -- extensions = { "toggleterm", "trouble" },
-            })
+            require("nerdicons").setup({})
         end
+    },
+    -- "nvim-tree/nvim-web-devicons",
+    -- {
+    --     "nvim-lualine/lualine.nvim",
+    --     dependencies = { "nvim-tree/nvim-web-devicons" },
+    --     event = "VeryLazy",
+    --     config = function()
+    --         -- Custom Lualine component to show attached language server
+    --         local clients_lsp = function()
+    --             local clients = vim.lsp.get_clients()
+    --             if next(clients) == nil then
+    --                 return ""
+    --             end
+    --
+    --             local c = {}
+    --             for _, client in pairs(clients) do
+    --                 table.insert(c, client.name)
+    --             end
+    --             return " " .. table.concat(c, "|")
+    --         end
+    --
+    --         require("lualine").setup({
+    --             options = {
+    --                 theme = "dracula",
+    --                 component_separators = "",
+    --                 section_separators = { left = "u+e0ce", right = "u+e0cf" },
+    --                 disabled_filetypes = { "alpha", "Outline" },
+    --             },
+    --             sections = {
+    --                 lualine_a = {
+    --                     { "mode", separator = { left = " ", right = "" }, icon = "" },
+    --                 },
+    --                 lualine_b = {
+    --                     {
+    --                         "filetype",
+    --                         icon_only = true,
+    --                         padding = { left = 1, right = 0 },
+    --                     },
+    --                     "filename",
+    --                 },
+    --                 lualine_c = {
+    --                     {
+    --                         "branch",
+    --                         icon = "󰘬",
+    --                     },
+    --                     {
+    --                         "diff",
+    --                         symbols = { added = " ", modified = " ", removed = " " },
+    --                         colored = false,
+    --                     },
+    --                 },
+    --                 lualine_x = {
+    --                     {
+    --                         "diagnostics",
+    --                         symbols = { error = " ", warn = " ", info = " ", hint = "" },
+    --                         update_in_insert = true,
+    --                     },
+    --                 },
+    --                 lualine_y = { clients_lsp },
+    --                 lualine_z = {
+    --                     { "location", separator = { left = "", right = " " }, icon = "" },
+    --                 },
+    --             },
+    --             inactive_sections = {
+    --                 lualine_a = { "filename" },
+    --                 lualine_b = {},
+    --                 lualine_c = {},
+    --                 lualine_x = {},
+    --                 lualine_y = {},
+    --                 lualine_z = { "location" },
+    --             },
+    --             extensions = { "toggleterm", "trouble" },
+    --         })
+    --     end
+    -- },
+    {
+        "ruifm/gitlinker.nvim",
+        dependencies = { "nvim-lua/plenary.nvim"},
+        config = function()
+            require("gitlinker").setup()
+        end
+    },
+    "wesQ3/vim-windowswap",
+    {
+        "ggandor/leap.nvim",
+        dependencies = { "tpope/vim-repeat" },
+        config = function() 
+            require("leap").create_default_mappings()
+        end
+    },
+    {
+        "folke/trouble.nvim",
+        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        cmd = "Trouble",
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>xX",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>cs",
+                "<cmd>Trouble symbols toggle focus=false<cr>",
+                desc = "Symbols (Trouble)",
+            },
+            {
+                "<leader>cl",
+                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                desc = "LSP Definitions / references / ... (Trouble)",
+            },
+            {
+                "<leader>xL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>xQ",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+        },
     },
     -- Themes
     "tanvirtin/monokai.nvim",
