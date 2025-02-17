@@ -7,10 +7,6 @@ local opts = {
 -----------------
 -- Normal mode --
 -----------------
--- Set 'signature_help' to Ctrl-Shift-K
-vim.keymap.set('n', '<C-S-k>', vim.lsp.buf.signature_help, { noremap = true, silent = true, desc = 'Show LSP signature help' })
-vim.keymap.set('n', '<leader>sv', ':vsplit <CR>', opts)
-
 -- Hint: see `:h vim.map.set()`
 -- Better window navigation
 vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
@@ -54,16 +50,4 @@ end, { desc = 'Telescope find symbols' })
 vim.keymap.set('n', '<leader>fr', function()
     require('telescope.builtin').lsp_references()
 end, { desc = 'Telescope find references' })
-
-----------------
--- Tests --
-----------------
-vim.keymap.set('n', '<leader>tn', ':GoTestFunc <CR>', opts)
-
-----------------
--- Zen Mode --
-----------------
-vim.keymap.set('n', '<leader>zm', function()
-    require('zen-mode').toggle({})
-end, { desc = 'Enter Zen mode' })
 
