@@ -19,6 +19,7 @@ return {
           "gopls",
           "ts_ls",
           "zls",
+          "marksman",
         },
         automatic_installation = true
       })
@@ -51,6 +52,7 @@ return {
       lspconfig.cssls.setup({})
       lspconfig.gopls.setup({})
       lspconfig.zls.setup({})
+      lspconfig.marksman.setup({})
     end
   },
   {
