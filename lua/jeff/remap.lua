@@ -11,6 +11,7 @@ vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = "Telescope find
 vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find references" })
 vim.keymap.set('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find definitions" })
+vim.keymap.set('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find implementation" })
 vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = "Telescope buffers" })
 vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = "Telescope help tags" })
 
@@ -75,3 +76,72 @@ vim.keymap.set('n', '<leader>ct', ':NvimTreeClose<CR>', { desc = "Close director
 -- Trouble
 vim.keymap.set('n', '<leader>oe', ':Trouble diagnostics<CR>', { desc = "Show Trouble diagnostics" })
 vim.keymap.set('n', '<leader>ce', ':Trouble close<CR>', { desc = "Close Trouble diagnostics" })
+
+-- Testing
+local function find_nearest_test_func()
+  local cursor = vim.api.nvim_win_get_cursor(0)[1]
+  local lines = vim.api.nvim_buf_get_lines(0, 0, cursor, false)
+  for i = #lines, 1, -1 do
+    local line = lines[i]
+    local name = line:match("^func%s+(Test%w+)")
+    if name then return name end
+  end
+  return nil
+end
+
+local function find_module_root()
+  local dir = vim.fn.expand("%:p:h")
+  while dir ~= "/" do
+    if vim.fn.filereadable(dir .. "/go.mod") == 1 then
+      return dir
+    end
+    dir = vim.fn.fnamemodify(dir, ":h")
+  end
+  return nil
+end
+
+local function get_go_import_path()
+  local file_path = vim.api.nvim_buf_get_name(0)
+  local file_dir = vim.fn.fnamemodify(file_path, ":h")
+  local mod_root = find_module_root()
+  if not mod_root then
+    error("Could not find go.mod root")
+  end
+
+  -- read module name from go.mod
+  local lines = vim.fn.readfile(mod_root .. "/go.mod")
+  local module_line = vim.tbl_filter(function(line)
+    return line:match("^module%s+")
+  end, lines)[1]
+
+  local mod_name = module_line:match("^module%s+(.+)")
+  if not mod_name then
+    error("Could not extract module name from go.mod")
+  end
+
+  -- compute relative path from module root to file directory
+  local rel_path = vim.fn.fnamemodify(file_dir, ":." .. mod_root)
+  return mod_name .. "/" .. rel_path, mod_root
+end
+
+local function run_nearest_go_test()
+  local test_func = find_nearest_test_func()
+  if not test_func then
+    print("No test function found above cursor.")
+    return
+  end
+
+  local pkg_path, cwd = get_go_import_path()
+  local cmd = "go test -timeout 30s -run ^" .. test_func .. "$ " .. pkg_path
+
+  vim.cmd("vsplit")
+  vim.cmd("wincmd l")
+  local width = math.floor(vim.o.columns * 0.3)
+  vim.cmd("vertical resize " .. width)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(0, buf)
+
+  vim.fn.termopen(cmd)
+end
+
+vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { noremap = true, silent = true })
