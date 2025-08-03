@@ -167,7 +167,7 @@ end
 local function run_nearest_go_test()
   local test_func = find_nearest_test_func()
   if not test_func then
-    print("No test function found above cursor.")
+    vim.notify("No test function found above cursor.")
     return
   end
 
