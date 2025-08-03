@@ -30,7 +30,30 @@ return {
     dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
       local lspconfig = require("lspconfig")
+      
+      -- Define on_attach function at the top
+      local on_attach = function(client, bufnr)
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = vim.api.nvim_create_augroup('LspFormat', { clear = false }),
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({
+                bufnr = bufnr,
+                filter = function(lsp_client)
+                  return lsp_client.name == "gopls"
+                    or lsp_client.name == "lua_ls"
+                    or lsp_client.name == "null-ls"
+                end,
+              })
+            end,
+          })
+        end
+      end
+
+      -- Setup LSP servers
       lspconfig.lua_ls.setup({
+        on_attach = on_attach,
         settings = {
           Lua = {
             diagnostics = {
@@ -46,13 +69,34 @@ return {
           },
         },
       })
-      lspconfig.ts_ls.setup({})
-      lspconfig.html.setup({})
-      lspconfig.svelte.setup({})
-      lspconfig.cssls.setup({})
-      lspconfig.gopls.setup({})
-      lspconfig.zls.setup({})
-      lspconfig.marksman.setup({})
+      
+      lspconfig.ts_ls.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.html.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.svelte.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.cssls.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.gopls.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.zls.setup({
+        on_attach = on_attach,
+      })
+      
+      lspconfig.marksman.setup({
+        on_attach = on_attach,
+      })
     end
   },
   {
