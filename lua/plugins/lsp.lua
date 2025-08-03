@@ -40,11 +40,6 @@ return {
             callback = function()
               vim.lsp.buf.format({
                 bufnr = bufnr,
-                filter = function(lsp_client)
-                  return lsp_client.name == "gopls"
-                    or lsp_client.name == "lua_ls"
-                    or lsp_client.name == "null-ls"
-                end,
               })
             end,
           })

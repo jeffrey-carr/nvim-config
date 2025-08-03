@@ -5,6 +5,7 @@ vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" }
 vim.keymap.set('n', '<leader>t', ':Themery<CR>', { desc = "Change themes" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
 vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>', { desc = "LazyGit" })
+vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = "Reload buffer from disk" })
 
 -- Telescope
 local telescope = require('telescope.builtin')
@@ -58,7 +59,7 @@ vim.keymap.set('n', '<leader>s', function()
   vim.cmd('wincmd l')
 end, { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
-vim.keymap.set('n', '<leader>vm', function()
+vim.keymap.set('n', '<leader>bm', function()
   local splitright = vim.o.splitright
   vim.o.splitright = true
   vim.cmd('vsplit')
@@ -93,7 +94,7 @@ vim.keymap.set('n', '<leader>vm', function()
     }
   })
 end, { desc = "Vertical split and open buffer picker with preview" }) -- Get list of buffers
-vim.keymap.set('n', '<leader>vs', function()
+vim.keymap.set('n', '<leader>bs', function()
   -- If only one window, do nothing
   if vim.fn.winnr('$') < 2 then
     vim.notify("Only one window open.")
@@ -180,4 +181,4 @@ local function run_nearest_go_test()
   vim.fn.termopen(cmd)
 end
 
-vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { desc = "Run the nearest test", noremap = true, silent = true })
