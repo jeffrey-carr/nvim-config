@@ -54,20 +54,59 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Move focus to above pane" })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Move focus to below pane" })
 vim.keymap.set('n', '<leader>s', ':vsplit<CR>', { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
-vim.keymap.set('n', '<leader>vb', function()
-  local buf_list = vim.fn.getbufinfo({ buflisted = 1 })
-  local choices = {}
-  for _, buf in ipairs(buf_list) do
-    table.insert(choices, buf.bufnr .. ': ' .. buf.name)
+vim.keymap.set('n', '<leader>vm', function()
+  local splitright = vim.o.splitright
+  vim.o.splitright = true
+  vim.cmd('vsplit')
+  vim.o.splitright = splitright
+
+  -- Focus on new window
+  local win = vim.api.nvim_get_current_win()
+
+  -- Open telescope buffers in this window
+  require('telescope.builtin').buffers({
+    attach_mappings = function(_, map)
+      local actions = require('telescope.actions')
+      local action_state = require('telescope.actions.state')
+
+      map('i', '<CR>', function(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        vim.api.nvim_win_set_buf(win, selection.bufnr)
+      end)
+      map('i', '<PageUp>', actions.preview_scrolling_up)
+      map('i', '<PageDown>', actions.preview_scrolling_down)
+      map('n', '<PageUp>', actions.preview_scrolling_up)
+      map('n', '<PageDown>', actions.preview_scrolling_down)
+
+      return true
+    end,
+    previewer = true,
+    layout_strategy = 'vertical',
+    layout_config = {
+      width = 0.5,
+      height = 0.9,
+    }
+  })
+end, { desc = "Vertical split and open buffer picker with preview" }) -- Get list of buffers
+vim.keymap.set('n', '<leader>vs', function()
+  -- If only one window, do nothing
+  if vim.fn.winnr('$') < 2 then
+    vim.notify("Only one window open.")
+    return
   end
 
-  vim.ui.select(choices, { prompt = 'Select buffer to open in vertical split:' }, function(choice)
-    if not choice then return end
-    local bufnr = tonumber(choice:match('^(%d+):'))
-    vim.cmd('vsplit')
-    vim.api.nvim_set_current_buf(bufnr)
-  end)
-end, { desc = "Vertical split with buffer select" })
+  -- Get current and other window
+  local cur_win = vim.api.nvim_get_current_win()
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+  local other_win = wins[1] == cur_win and wins[2] or wins[1]
+
+  -- Get buffers
+  local other_buf = vim.api.nvim_win_get_buf(other_win)
+
+  -- Close all but current window
+  vim.cmd('only')
+end, { desc = "Unsplits vertically split buffers into separate tabs" })
 
 -- Directory
 vim.keymap.set('n', '<leader>db', ':Dirbuf<CR>', { desc = "Open directory buffer" })
