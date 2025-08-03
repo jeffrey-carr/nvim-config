@@ -52,7 +52,11 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Move focus to right pane" })
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Move focus to left pane" })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Move focus to above pane" })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Move focus to below pane" })
-vim.keymap.set('n', '<leader>s', ':vsplit<CR>', { desc = "Vertical split" })
+-- vim.keymap.set('n', '<leader>s', ':vsplit<CR>', { desc = "Vertical split" })
+vim.keymap.set('n', '<leader>s', function()
+  vim.cmd('vsplit')
+  vim.cmd('wincmd l')
+end, { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
 vim.keymap.set('n', '<leader>vm', function()
   local splitright = vim.o.splitright
@@ -95,14 +99,6 @@ vim.keymap.set('n', '<leader>vs', function()
     vim.notify("Only one window open.")
     return
   end
-
-  -- Get current and other window
-  local cur_win = vim.api.nvim_get_current_win()
-  local wins = vim.api.nvim_tabpage_list_wins(0)
-  local other_win = wins[1] == cur_win and wins[2] or wins[1]
-
-  -- Get buffers
-  local other_buf = vim.api.nvim_win_get_buf(other_win)
 
   -- Close all but current window
   vim.cmd('only')
