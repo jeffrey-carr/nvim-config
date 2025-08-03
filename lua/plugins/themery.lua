@@ -15,6 +15,12 @@ return {
         "catppuccin-macchiato",
         "catppuccin-mocha",
         "tokyonight",
+        "kanagawa-wave",
+        "kanagawa-dragon",
+        "kanagawa-lotus",
+        "neofusion",
+        "aurora",
+        "spaceduck",
       },
       livePreview = true,
     })

@@ -13,6 +13,22 @@ return {
   },
   {
     'folke/tokyonight.nvim',
-    name = 'tokyonight'
-  }
+    name = 'tokyonight',
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    name = 'kanagawa',
+  },
+  {
+    'diegoulloao/neofusion.nvim',
+    name = 'neofusion',
+  },
+  {
+    'ray-x/aurora',
+    name = 'aurora',
+  },
+  {
+    'spaceduck-theme/nvim',
+    name = 'spaceduck',
+  },
 }
