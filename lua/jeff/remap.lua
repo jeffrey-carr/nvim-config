@@ -25,9 +25,9 @@ local function copy_github_permalink()
   -- Get Git info
   local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
   local repo = vim.fn.system('git config --get remote.origin.url')
-    :gsub('%.git\n', '')
-    :gsub('git@github.com:', 'https://github.com/')
-    :gsub('\n', '')
+      :gsub('%.git\n', '')
+      :gsub('git@github.com:', 'https://github.com/')
+      :gsub('\n', '')
   local commit = vim.fn.system('git rev-parse HEAD'):gsub('\n', '')
 
   -- Relative path from Git root
@@ -53,7 +53,7 @@ vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Move focus to left pane" })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Move focus to above pane" })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Move focus to below pane" })
 vim.keymap.set('n', '<leader>s', ':vsplit<CR>', { desc = "Vertical split" })
-vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split "})
+vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
 vim.keymap.set('n', '<leader>vb', function()
   local buf_list = vim.fn.getbufinfo({ buflisted = 1 })
   local choices = {}
