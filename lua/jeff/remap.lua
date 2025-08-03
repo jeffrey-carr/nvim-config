@@ -4,6 +4,7 @@ vim.keymap.set('n', '<leader>cb', ':bd<CR>', { desc = "Close buffer" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set('n', '<leader>t', ':Themery<CR>', { desc = "Change themes" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
+vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>', { desc = "LazyGit" })
 
 -- Telescope
 local telescope = require('telescope.builtin')
