@@ -7,6 +7,14 @@ vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
 vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>', { desc = "LazyGit" })
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = "Reload buffer from disk" })
 vim.keymap.set('v', '<leader>cs', ':CodeSnap<CR>', { desc = "Take screenshot (CodeSnap)" })
+vim.keymap.set('n', '<leader>oc', function()
+  vim.cmd('botright new')
+  vim.cmd("resize " .. math.floor(vim.o.lines / 3)) -- resize to 1/3 of screen height
+  vim.cmd('terminal')
+  -- Start in Insert mode
+  vim.cmd('startinsert')
+end, { desc = "Open console" })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 -- Telescope
 local telescope = require('telescope.builtin')
@@ -15,6 +23,7 @@ vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = "Telescope live 
 vim.keymap.set('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find references" })
 vim.keymap.set('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find definitions" })
 vim.keymap.set('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find implementation" })
+vim.keymap.set('n', '<leader>fs', telescope.lsp_document_symbols, { desc = "Telescope find symbols" })
 vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = "Telescope buffers" })
 vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = "Telescope help tags" })
 
@@ -170,6 +179,7 @@ local function run_nearest_go_test()
   end
 
   local pkg_path, cwd = get_go_import_path()
+  vim.notify(cwd)
   local cmd = "go test -timeout 30s -run ^" .. test_func .. "$ " .. pkg_path
 
   vim.cmd("vsplit")

@@ -17,3 +17,10 @@ Here's a handy command to install all: `brew install jdftls fd fzf ripgrep tree-
 - `tree-sitter`
     - Idk
     - `brew install tree-sitter`
+
+# Wants
+- Lualine
+    - Or just git info in terminal
+    - But don't slow down boot time
+- Copilot
+- Better merge conflict resolver

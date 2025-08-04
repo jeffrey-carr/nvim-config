@@ -10,10 +10,10 @@ return {
           type = "split",
           relative = "win",
           position = "right",
-          size = 0.4,
+          size = 1,
         },
         groups = {
-          { "filename", format = "{file_icon} {basename:Title} {count}"},
+          { "filename", format = "{file_icon} {basename:Title} {count}" },
         }
       }
     },
