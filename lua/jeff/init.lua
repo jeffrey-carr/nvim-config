@@ -13,4 +13,5 @@ vim.diagnostic.config({
 require("jeff.plugin_manager")
 require("jeff.lazy_init")
 require("jeff.set")
+require("jeff.config_manager")
 require("jeff.remap")
