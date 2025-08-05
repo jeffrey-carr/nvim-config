@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_treesitter then
+  return {}
+end
+
 return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",

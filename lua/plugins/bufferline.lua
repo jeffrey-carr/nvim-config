@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_bufferline then
+  return{}
+end
+
 return {
   "akinsho/bufferline.nvim",
   version = "*",

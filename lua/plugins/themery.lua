@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_themery then
+  return {}
+end
+
 return {
   "zaldih/themery.nvim",
   lazy = false,

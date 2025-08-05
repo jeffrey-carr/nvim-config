@@ -10,6 +10,7 @@ vim.diagnostic.config({
   underline = true,
 })
 
+require("jeff.plugin_manager")
 require("jeff.lazy_init")
 require("jeff.set")
 require("jeff.remap")

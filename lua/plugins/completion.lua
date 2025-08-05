@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_completion then
+  return{}
+end
+
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",

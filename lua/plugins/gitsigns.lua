@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_gitsigns then
+  return {}
+end
+
 return {
   {
     "lewis6991/gitsigns.nvim",

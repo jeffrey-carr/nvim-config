@@ -1,4 +1,8 @@
 -- Highlight all instances of word under cursor
+if not vim.g.jeff_enable_illuminate then
+  return {}
+end
+
 return {
   {
     "RRethy/vim-illuminate",

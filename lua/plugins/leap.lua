@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_leap then
+  return {}
+end
+
 return {
   "ggandor/leap.nvim",
   dependencies = { "tpope/vim-repeat" },

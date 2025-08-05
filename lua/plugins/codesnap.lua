@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_codesnap then
+  return{}
+end
+
 return {
   "mistricky/codesnap.nvim",
   build = "make",

@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_lsp then
+  return {}
+end
+
 return {
   {
     "williamboman/mason.nvim",

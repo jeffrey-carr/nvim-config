@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_lazygit then
+  return {}
+end
+
 return {
     "kdheepak/lazygit.nvim",
     lazy = true,

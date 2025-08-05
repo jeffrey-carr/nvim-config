@@ -1,3 +1,7 @@
+if not vim.g.jeff_enable_notify then
+  return {}
+end
+
 return {
   "rcarriga/nvim-notify",
   config = function()
