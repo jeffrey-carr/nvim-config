@@ -14,4 +14,6 @@ vim.opt.smartindent = true
 -- misc
 vim.opt.wrap = false
 vim.opt.incsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.opt.termguicolors = true

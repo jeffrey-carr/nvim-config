@@ -63,7 +63,6 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Move focus to right pane" })
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Move focus to left pane" })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Move focus to above pane" })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Move focus to below pane" })
--- vim.keymap.set('n', '<leader>s', ':vsplit<CR>', { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>s', function()
   vim.cmd('vsplit')
   vim.cmd('wincmd l')
@@ -192,4 +191,22 @@ local function run_nearest_go_test()
   vim.fn.termopen(cmd)
 end
 
+-- Testing
 vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { desc = "Run the nearest test", noremap = true, silent = true })
+
+-- Copilot
+vim.keymap.set('n', '<leader>ce', function()
+  vim.b.copilot_enabled = true
+end, { desc = "Enable Copilot" })
+vim.keymap.set('n', '<leader>cd', function()
+  vim.b.copilot_enabled = false
+end, { desc = "Disable Copilot" })
+vim.keymap.set('n', '<leader>cp', ':Copilot panel<CR>', { desc = "Open Copilot panel" })
+vim.keymap.set('i', '<C-Right>', '<Plug>(copilot-next)', { desc = "Next Copilot suggestion" })
+vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-previous)', { desc = "Previous Copilot suggestion" })
+vim.keymap.set('i', '<C-Enter>', 'copilot#Accept("\\<CR>")', {
+  desc = "Accept Copilot suggestion",
+  expr = true,
+  replace_keycodes = false,
+})
+vim.g.copilot_no_tab_map = true
