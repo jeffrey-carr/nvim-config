@@ -1,12 +1,23 @@
+if vim.g.jeff_enable_codesnap then
+  vim.keymap.set('v', '<leader>cs', ':CodeSnap<CR>', { desc = "Take screenshot (CodeSnap)" })
+end
+if vim.g.jeff_enable_comment then
+  vim.keymap.set('n', '<leader>/', '<Plug>(comment_toggle_linewise_current)', { desc = "Comment current line" })
+end
+
+if vim.g.jeff_enable_themery then
+  vim.keymap.set('n', '<leader>t', ':Themery<CR>', { desc = "Change themes" })
+end
+
+if vim.g.jeff_enable_lazygit then
+  vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>', { desc = "LazyGit" })
+end
+
 -- Misc
-vim.keymap.set('n', '<leader>/', '<Plug>(comment_toggle_linewise_current)', { desc = "Comment current line" })
 vim.keymap.set('n', '<leader>cb', ':bd<CR>', { desc = "Close buffer" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
-vim.keymap.set('n', '<leader>t', ':Themery<CR>', { desc = "Change themes" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
-vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>', { desc = "LazyGit" })
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = "Reload buffer from disk" })
-vim.keymap.set('v', '<leader>cs', ':CodeSnap<CR>', { desc = "Take screenshot (CodeSnap)" })
 vim.keymap.set('n', '<leader>oc', function()
   vim.cmd('botright new')
   vim.cmd("resize " .. math.floor(vim.o.lines / 3)) -- resize to 1/3 of screen height
@@ -17,15 +28,53 @@ end, { desc = "Open console" })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 -- Telescope
-local telescope = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = "Telescope find files" })
-vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find references" })
-vim.keymap.set('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find definitions" })
-vim.keymap.set('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find implementation" })
-vim.keymap.set('n', '<leader>fs', telescope.lsp_document_symbols, { desc = "Telescope find symbols" })
-vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = "Telescope buffers" })
-vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = "Telescope help tags" })
+if vim.g.jeff_enable_telescope then
+  local telescope = require('telescope.builtin')
+  vim.keymap.set('n', '<leader>ff', telescope.find_files, { desc = "Telescope find files" })
+  vim.keymap.set('n', '<leader>fg', telescope.live_grep, { desc = "Telescope live grep" })
+  vim.keymap.set('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find references" })
+  vim.keymap.set('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find definitions" })
+  vim.keymap.set('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find implementation" })
+  vim.keymap.set('n', '<leader>fs', telescope.lsp_document_symbols, { desc = "Telescope find symbols" })
+  vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc = "Telescope buffers" })
+  vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = "Telescope help tags" })
+
+  vim.keymap.set('n', '<leader>bm', function()
+    local splitright = vim.o.splitright
+    vim.o.splitright = true
+    vim.cmd('vsplit')
+    vim.o.splitright = splitright
+
+    -- Focus on new window
+    local win = vim.api.nvim_get_current_win()
+
+    -- Open telescope buffers in this window
+    require('telescope.builtin').buffers({
+      attach_mappings = function(_, map)
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+
+        map('i', '<CR>', function(prompt_bufnr)
+          local selection = action_state.get_selected_entry()
+          actions.close(prompt_bufnr)
+          vim.api.nvim_win_set_buf(win, selection.bufnr)
+        end)
+        map('i', '<PageUp>', actions.preview_scrolling_up)
+        map('i', '<PageDown>', actions.preview_scrolling_down)
+        map('n', '<PageUp>', actions.preview_scrolling_up)
+        map('n', '<PageDown>', actions.preview_scrolling_down)
+
+        return true
+      end,
+      previewer = true,
+      layout_strategy = 'vertical',
+      layout_config = {
+        width = 0.5,
+        height = 0.9,
+      }
+    })
+  end, { desc = "Vertical split and open buffer picker with preview" }) -- Get list of buffers
+end
 
 -- Git
 local function copy_github_permalink()
@@ -51,12 +100,14 @@ local function copy_github_permalink()
   vim.fn.setreg('+', url)
   vim.notify("📎 Copied remote link to clipboard", vim.log.levels.INFO)
 end
-local gitsigns = require('gitsigns')
 vim.keymap.set('n', '<leader>rc', copy_github_permalink, { desc = "Copy GitHub permalink" })
-vim.keymap.set('n', '<leader>gb', function()
-  gitsigns.blame_line({ full = true })
-end, { desc = "Git blame line" })
-vim.keymap.set('n', '\\gf', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Git blame file" })
+if vim.g.jeff_enable_gitsigns then
+  local gitsigns = require('gitsigns')
+  vim.keymap.set('n', '<leader>gb', function()
+    gitsigns.blame_line({ full = true })
+  end, { desc = "Git blame line" })
+  vim.keymap.set('n', '\\gf', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Git blame file" })
+end
 
 -- Window management
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Move focus to right pane" })
@@ -68,41 +119,6 @@ vim.keymap.set('n', '<leader>s', function()
   vim.cmd('wincmd l')
 end, { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
-vim.keymap.set('n', '<leader>bm', function()
-  local splitright = vim.o.splitright
-  vim.o.splitright = true
-  vim.cmd('vsplit')
-  vim.o.splitright = splitright
-
-  -- Focus on new window
-  local win = vim.api.nvim_get_current_win()
-
-  -- Open telescope buffers in this window
-  require('telescope.builtin').buffers({
-    attach_mappings = function(_, map)
-      local actions = require('telescope.actions')
-      local action_state = require('telescope.actions.state')
-
-      map('i', '<CR>', function(prompt_bufnr)
-        local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        vim.api.nvim_win_set_buf(win, selection.bufnr)
-      end)
-      map('i', '<PageUp>', actions.preview_scrolling_up)
-      map('i', '<PageDown>', actions.preview_scrolling_down)
-      map('n', '<PageUp>', actions.preview_scrolling_up)
-      map('n', '<PageDown>', actions.preview_scrolling_down)
-
-      return true
-    end,
-    previewer = true,
-    layout_strategy = 'vertical',
-    layout_config = {
-      width = 0.5,
-      height = 0.9,
-    }
-  })
-end, { desc = "Vertical split and open buffer picker with preview" }) -- Get list of buffers
 vim.keymap.set('n', '<leader>bs', function()
   -- If only one window, do nothing
   if vim.fn.winnr('$') < 2 then
@@ -115,13 +131,19 @@ vim.keymap.set('n', '<leader>bs', function()
 end, { desc = "Unsplits vertically split buffers into separate tabs" })
 
 -- Directory
-vim.keymap.set('n', '<leader>db', ':Dirbuf<CR>', { desc = "Open directory buffer" })
-vim.keymap.set('n', '<leader>ot', ':NvimTreeOpen<CR>', { desc = "Open directory tree" })
-vim.keymap.set('n', '<leader>ct', ':NvimTreeClose<CR>', { desc = "Close directory tree" })
+if vim.g.jeff_enable_dirbuf then
+  vim.keymap.set('n', '<leader>db', ':Dirbuf<CR>', { desc = "Open directory buffer" })
+end
+if vim.g.jeff_enable_nvim_tree then
+  vim.keymap.set('n', '<leader>ot', ':NvimTreeOpen<CR>', { desc = "Open directory tree" })
+  vim.keymap.set('n', '<leader>ct', ':NvimTreeClose<CR>', { desc = "Close directory tree" })
+end
 
 -- Trouble
-vim.keymap.set('n', '<leader>oe', ':Trouble diagnostics<CR>', { desc = "Show Trouble diagnostics" })
-vim.keymap.set('n', '<leader>ce', ':Trouble close<CR>', { desc = "Close Trouble diagnostics" })
+if vim.g.jeff_enable_trouble then
+  vim.keymap.set('n', '<leader>oe', ':Trouble diagnostics<CR>', { desc = "Show Trouble diagnostics" })
+  vim.keymap.set('n', '<leader>ce', ':Trouble close<CR>', { desc = "Close Trouble diagnostics" })
+end
 
 -- Testing
 local function find_nearest_test_func()
@@ -190,24 +212,26 @@ local function run_nearest_go_test()
 
   vim.fn.termopen(cmd)
 end
-
--- Testing
 vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { desc = "Run the nearest test", noremap = true, silent = true })
 
 -- Copilot
-vim.keymap.set('n', '<leader>ce', function()
-  vim.b.copilot_enabled = true
-end, { desc = "Enable Copilot" })
-vim.keymap.set('n', '<leader>cd', function()
-  vim.b.copilot_enabled = false
-end, { desc = "Disable Copilot" })
-vim.keymap.set('n', '<leader>cp', ':Copilot panel<CR>', { desc = "Open Copilot panel" })
-vim.keymap.set('i', '<C-Right>', '<Plug>(copilot-next)', { desc = "Next Copilot suggestion" })
-vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-previous)', { desc = "Previous Copilot suggestion" })
-vim.keymap.set('i', '<C-Enter>', 'copilot#Accept("\\<CR>")', {
-  desc = "Accept Copilot suggestion",
-  expr = true,
-  replace_keycodes = false,
-})
-vim.g.copilot_no_tab_map = true
-vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot chat" })
+if vim.g.jeff_enable_copilot then
+  vim.keymap.set('n', '<leader>ce', function()
+    vim.b.copilot_enabled = true
+  end, { desc = "Enable Copilot" })
+  vim.keymap.set('n', '<leader>cd', function()
+    vim.b.copilot_enabled = false
+  end, { desc = "Disable Copilot" })
+  vim.keymap.set('n', '<leader>cp', ':Copilot panel<CR>', { desc = "Open Copilot panel" })
+  vim.keymap.set('i', '<C-Right>', '<Plug>(copilot-next)', { desc = "Next Copilot suggestion" })
+  vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-previous)', { desc = "Previous Copilot suggestion" })
+  vim.keymap.set('i', '<C-Enter>', 'copilot#Accept("\\<CR>")', {
+    desc = "Accept Copilot suggestion",
+    expr = true,
+    replace_keycodes = false,
+  })
+  vim.g.copilot_no_tab_map = true
+end
+if vim.g.jeff_enable_copilot_chat then
+  vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot chat" })
+end
