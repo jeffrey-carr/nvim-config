@@ -217,15 +217,12 @@ vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { desc = "Run the nearest
 -- Copilot
 if vim.g.jeff_enable_copilot then
   local copilot_enabled_config = vim.fn.stdpath('data') .. '/copilot_enabled_config.lua'
-  vim.keymap.set('n', '<leader>aaaa', function()
-    vim.cmd('echo ' .. tostring(vim.fn.stdpath('data')))
-  end)
-  vim.keymap.set('n', '<leader>ce', function()
+  vim.keymap.set('n', '<leader>ec', function()
     vim.g.copilot_enabled = true
     vim.fn.writefile({ 'return true' }, copilot_enabled_config)
     vim.notify("Copilot enabled globally")
   end, { desc = "Enable Copilot" })
-  vim.keymap.set('n', '<leader>cd', function()
+  vim.keymap.set('n', '<leader>dc', function()
     vim.g.copilot_enabled = false
     vim.fn.writefile({ 'return false' }, copilot_enabled_config)
     vim.notify("Copilot disabled globally")
@@ -233,7 +230,7 @@ if vim.g.jeff_enable_copilot then
   vim.keymap.set('n', '<leader>cp', ':Copilot panel<CR>', { desc = "Open Copilot panel" })
   vim.keymap.set('i', '<C-Right>', '<Plug>(copilot-next)', { desc = "Next Copilot suggestion" })
   vim.keymap.set('i', '<C-Left>', '<Plug>(copilot-previous)', { desc = "Previous Copilot suggestion" })
-  vim.keymap.set('i', '<C-Enter>', 'copilot#Accept("\\<CR>")', {
+  vim.keymap.set('i', '<C-l>', 'copilot#Accept("\\<CR>")', {
     desc = "Accept Copilot suggestion",
     expr = true,
     replace_keycodes = false,

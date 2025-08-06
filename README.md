@@ -22,5 +22,14 @@ Here's a handy command to install all: `brew install jdftls fd fzf ripgrep tree-
 - Lualine
     - Or just git info in terminal
     - But don't slow down boot time
-- Copilot
+- AI agent
 - Better merge conflict resolver
+- Better command-line completion
+    - Ignore caps, `_`, etc.
+- Tmux symbol when leader is active
+- Different key to suggest zsh-autocompletes (CTRL-Tab?)
+- Telescope sorting
+    - Implementations before interfaces
+- Figure out why sometimes `\fr` finds multiple references on the same line
+- Get implementation comments in context menu
+- Smearcursor

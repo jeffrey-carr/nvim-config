@@ -1,7 +1,6 @@
 local git_email = vim.fn.system('git config --get user.email'):gsub('%s+', '')
-local user_email = vim.fn.system('git config --get user.email'):gsub('%s+', '')
 local is_home = git_email == 'jeffrey.carr98@gmail.com'
-local is_work = user_email == 'jeff@getredcircle.com'
+local is_work = git_email == 'jeff@getredcircle.com'
 
 local default_enabled = true
 vim.g.jeff_enable_autoclose = default_enabled
