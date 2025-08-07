@@ -33,3 +33,4 @@ Here's a handy command to install all: `brew install jdftls fd fzf ripgrep tree-
 - Figure out why sometimes `\fr` finds multiple references on the same line
 - Get implementation comments in context menu
 - Smearcursor
+- Treesitter context (see slack messages with Brian)
