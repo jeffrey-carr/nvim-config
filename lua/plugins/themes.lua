@@ -31,4 +31,8 @@ return {
     'spaceduck-theme/nvim',
     name = 'spaceduck',
   },
+  {
+    'neanias/everforest-nvim',
+    name = 'everforest',
+  }
 }

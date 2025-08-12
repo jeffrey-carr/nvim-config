@@ -26,6 +26,7 @@ vim.keymap.set('n', '<leader>oc', function()
   vim.cmd('startinsert')
 end, { desc = "Open console" })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true, silent = true })
 
 -- Telescope
 if vim.g.jeff_enable_telescope then
@@ -106,7 +107,7 @@ if vim.g.jeff_enable_gitsigns then
   vim.keymap.set('n', '<leader>gb', function()
     gitsigns.blame_line({ full = true })
   end, { desc = "Git blame line" })
-  vim.keymap.set('n', '\\gf', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Git blame file" })
+  vim.keymap.set('n', '<leader>gf', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Git blame file" })
 end
 
 -- Window management

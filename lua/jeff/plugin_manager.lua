@@ -30,6 +30,8 @@ vim.g.jeff_enable_treesitter = default_enabled
 vim.g.jeff_enable_trouble = default_enabled
 vim.g.jeff_enable_which_keys = default_enabled
 vim.g.jeff_enable_windowswap = default_enabled
+vim.g.jeff_enable_treesitter_context = default_enabled
+vim.g.jeff_enable_grug_far = default_enabled
 
 -- Enable/disable per profile
 if is_work then
