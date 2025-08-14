@@ -14,7 +14,7 @@ return {
           type = "split",
           relative = "win",
           position = "right",
-          size = 1,
+          size = 0.5,
         },
         groups = {
           { "filename", format = "{file_icon} {basename:Title} {count}" },
