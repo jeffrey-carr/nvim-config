@@ -35,9 +35,9 @@ vim.g.jeff_enable_grug_far = default_enabled
 
 -- Enable/disable per profile
 if is_work then
-  vim.g.jeff_enable_copilot_chat = false
-  vim.g.jeff_enable_prettier = false
-  vim.notify("Logged in as work. Copilot chat and Prettier disabled.")
+  -- vim.g.jeff_enable_copilot_chat = true
+  -- vim.g.jeff_enable_prettier = false
+  vim.notify("Logged in as work.")
 elseif is_home then
   vim.notify("Logged in as home. All plugins enabled. Happy coding :)")
 else

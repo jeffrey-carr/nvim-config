@@ -34,5 +34,9 @@ return {
   {
     'neanias/everforest-nvim',
     name = 'everforest',
+  },
+  {
+    'projekt0n/github-nvim-theme',
+    name = "github"
   }
 }

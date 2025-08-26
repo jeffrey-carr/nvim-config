@@ -17,3 +17,4 @@ vim.opt.incsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.opt.termguicolors = true
+vim.o.completeopt = 'menuone,noselect,preview'

@@ -6,7 +6,7 @@ if vim.g.jeff_enable_comment then
 end
 
 if vim.g.jeff_enable_themery then
-  vim.keymap.set('n', '<leader>t', ':Themery<CR>', { desc = "Change themes" })
+  vim.keymap.set('n', '<leader>tt', ':Themery<CR>', { desc = "Change themes" })
 end
 
 if vim.g.jeff_enable_lazygit then
@@ -18,15 +18,16 @@ vim.keymap.set('n', '<leader>cb', ':bd<CR>', { desc = "Close buffer" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
 vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = "Reload buffer from disk" })
-vim.keymap.set('n', '<leader>oc', function()
+vim.keymap.set('n', '<leader>tc', function()
   vim.cmd('botright new')
   vim.cmd("resize " .. math.floor(vim.o.lines / 3)) -- resize to 1/3 of screen height
   vim.cmd('terminal')
   -- Start in Insert mode
   vim.cmd('startinsert')
-end, { desc = "Open console" })
+end, { desc = "Toggle console" })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>rh', ':noh<CR>', { desc = "Remove search highlights" })
 
 -- Telescope
 if vim.g.jeff_enable_telescope then
@@ -239,5 +240,6 @@ if vim.g.jeff_enable_copilot then
   vim.g.copilot_no_tab_map = true
 end
 if vim.g.jeff_enable_copilot_chat then
-  vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot chat" })
+  vim.keymap.set('n', '<leader>oc', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot chat" })
+  vim.keymap.set('n', '<leader>cc', ':CopilotChatReset<CR>', { desc = "Reset Copilot chat" })
 end

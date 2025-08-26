@@ -26,20 +26,12 @@ return {
         "aurora",
         "spaceduck",
         "everforest",
-        "everforest-light",
+        "github_dark",
+        "github_light",
+        "github_dark_dimmed",
+        "github_light_high_contrast",
       },
       livePreview = true,
-      before_load = function(theme_name)
-        if theme_name == "everforest-light" then
-          vim.o.background = "light"
-          vim.g.everforest_background = "soft" -- can be "hard", "medium", "soft"
-          vim.cmd.colorscheme("everforest")
-          return false
-        elseif theme_name == "everforest" then
-          vim.o.background = "dark"
-          vim.g.everforest_background = "medium"
-        end
-      end,
     })
   end
 }

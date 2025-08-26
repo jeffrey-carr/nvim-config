@@ -11,4 +11,11 @@ return {
   opts = {
     auto_insert_mode = true,
   },
+  config = function()
+    require("CopilotChat").setup({
+      mappings = {
+        reset = false,
+      }
+    })
+  end
 }
