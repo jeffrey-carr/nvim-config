@@ -32,11 +32,11 @@ vim.g.jeff_enable_which_keys = default_enabled
 vim.g.jeff_enable_windowswap = default_enabled
 vim.g.jeff_enable_treesitter_context = default_enabled
 vim.g.jeff_enable_grug_far = default_enabled
+vim.g.jeff_enable_theme_hub= default_enabled
 
 -- Enable/disable per profile
 if is_work then
-  -- vim.g.jeff_enable_copilot_chat = true
-  -- vim.g.jeff_enable_prettier = false
+  vim.g.jeff_enable_themery = false
   vim.notify("Logged in as work.")
 elseif is_home then
   vim.notify("Logged in as home. All plugins enabled. Happy coding :)")

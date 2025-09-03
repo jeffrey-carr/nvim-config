@@ -197,12 +197,11 @@ end
 local function run_nearest_go_test()
   local test_func = find_nearest_test_func()
   if not test_func then
-    vim.notify("No test function found above cursor.")
+    vim.notify("No test function found above cursor.", vim.log.levels.ERROR)
     return
   end
 
   local pkg_path, cwd = get_go_import_path()
-  vim.notify(cwd)
   local cmd = "go test -timeout 30s -run ^" .. test_func .. "$ " .. pkg_path
 
   vim.cmd("vsplit")
@@ -242,4 +241,8 @@ end
 if vim.g.jeff_enable_copilot_chat then
   vim.keymap.set('n', '<leader>oc', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot chat" })
   vim.keymap.set('n', '<leader>cc', ':CopilotChatReset<CR>', { desc = "Reset Copilot chat" })
+end
+
+if vim.g.jeff_enable_theme_hub then
+  vim.keymap.set('n', '<leader>tt', ':ThemeHub<CR>', { desc = "Open Theme Hub" })
 end

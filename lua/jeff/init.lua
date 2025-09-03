@@ -10,9 +10,6 @@ vim.diagnostic.config({
   underline = true,
 })
 
--- Temporary debugging
-vim.lsp.set_log_level("debug")
-
 require("jeff.plugin_manager")
 require("jeff.lazy_init")
 require("jeff.set")

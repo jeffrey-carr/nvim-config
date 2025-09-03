@@ -11,6 +11,7 @@ return {
         "rose-pine",
         "nightfox",
         "duskfox",
+        "dawnfox",
         "nordfox",
         "terafox",
         "carbonfox",

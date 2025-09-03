@@ -13,7 +13,8 @@ return {
           "mocks/",
           "mock_*",
         }
-      }
+      },
     })
+    require('telescope').load_extension('ui-select')
   end
 }
