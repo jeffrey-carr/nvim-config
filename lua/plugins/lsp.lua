@@ -20,7 +20,7 @@ return {
       local lspconfig = require("lspconfig")
       local mlsp = require("mason-lspconfig")
 
-      -- capabilities (safe if you don't use cmp)
+      -- Optional: enhanced capabilities if you use nvim-cmp
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       pcall(function()
         capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -43,6 +43,7 @@ return {
 
       local on_attach = function(client, bufnr)
         vim.bo[bufnr].formatexpr = ""
+
         if client.supports_method("textDocument/formatting") then
           local group = vim.api.nvim_create_augroup("LspFormat." .. bufnr, { clear = true })
           vim.api.nvim_create_autocmd("BufWritePre", {
@@ -54,71 +55,85 @@ return {
         end
       end
 
-      local ensure = {
-        "lua_ls", "html", "svelte", "cssls", "gopls", "ts_ls", "zls", "marksman",
-      }
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "html",
+          "svelte",
+          "cssls",
+          "gopls",
+          "ts_ls",
+          "zls",
+          "marksman",
+          "ruff",
+        },
+        automatic_installation = true,
+        handlers = {
+          -- Default for all servers
+          function(server)
+            lspconfig[server].setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+            })
+          end,
 
-      -- Define handlers once
-      local handlers = {
-        -- default handler for any server without an override
-        function(server)
-          lspconfig[server].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-          })
-        end,
-
-        -- per-server overrides:
-        ["lua_ls"] = function()
-          lspconfig.lua_ls.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                diagnostics = { globals = { "vim" } },
-                workspace = { library = vim.api.nvim_get_runtime_file("", true), checkThirdParty = false },
-                telemetry = { enable = false },
+          ["lua_ls"] = function()
+            lspconfig.lua_ls.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              settings = {
+                Lua = {
+                  diagnostics = { globals = { "vim" } },
+                  workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                    checkThirdParty = false,
+                  },
+                  telemetry = { enable = false },
+                },
               },
-            },
-          })
-        end,
+            })
+          end,
 
-        ["gopls"] = function()
-          lspconfig.gopls.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-              gopls = {
-                gofumpt = true,
-                usePlaceholders = true,
-                completeUnimported = true,
-                analyses = { unusedparams = true },
+          ["gopls"] = function()
+            lspconfig.gopls.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              settings = {
+                gopls = {
+                  gofumpt = true,
+                  usePlaceholders = true,
+                  completeUnimported = true,
+                  analyses = { unusedparams = true },
+                },
               },
-            },
-          })
-        end,
-      }
+            })
+          end,
 
-      -- Back-compat: prefer the new API (handlers in setup), else fall back to setup_handlers()
-      if mlsp.setup_handlers == nil then
-        -- NEW style
-        mlsp.setup({
-          ensure_installed = ensure,
-          automatic_installation = true,
-          handlers = handlers,
-        })
-      else
-        -- OLD style
-        mlsp.setup({
-          ensure_installed = ensure,
-          automatic_installation = true,
-        })
-        mlsp.setup_handlers(handlers)
-      end
-    end,
+          ["ruff"] = function()
+            local util = require("lspconfig.util")
+            lspconfig.ruff.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              root_dir = function(fname)
+                return util.root_pattern("pyproject.toml", "ruff.toml", ".ruff.toml", ".git")(fname)
+                  or util.path.dirname(fname)
+              end,
+              init_options = {
+                settings = {
+                  codeAction = {
+                    disableRuleComment = { enable = true, location = "separateLine" },
+                    fixViolation = { enable = true },
+                  },
+                  lint = { enable = true },
+                },
+              },
+            })
+          end,
+        },
+      })
+    end
   },
-
-  -- Java via nvim-jdtls (start_or_attach per project)
+  -- Java: nvim-jdtls (start_or_attach per project)
   {
     "mfussenegger/nvim-jdtls",
     ft = { "java" },
@@ -201,20 +216,36 @@ return {
           java = {
             format = { enabled = true },
             signatureHelp = { enabled = true },
-            configuration = { updateBuildConfiguration = "interactive" },
-            completion = { guessMethodArguments = true },
+            contentProvider = { preferred = "fernflower" },
+            configuration = {
+              updateBuildConfiguration = "interactive",
+            },
+            completion = {
+              guessMethodArguments = true,
+              favoriteStaticMembers = {
+                "org.junit.Assert.*",
+                "org.mockito.Mockito.*",
+                "java.util.Objects.requireNonNull",
+              },
+            },
           },
         },
-        init_options = { bundles = {} },
+        init_options = {
+          bundles = {}, -- add test/debug bundles if you use them
+        },
       }
 
-      local grp = vim.api.nvim_create_augroup("JeffJdtls", { clear = true })
+      -- Start or attach (prevents duplicates per root_dir)
+      local group = vim.api.nvim_create_augroup("JeffJdtls", { clear = true })
       vim.api.nvim_create_autocmd("FileType", {
-        group = grp,
+        group = group,
         pattern = "java",
-        callback = function() jdtls.start_or_attach(config) end,
+        callback = function()
+          jdtls.start_or_attach(config)
+        end,
         desc = "Start/attach jdtls",
       })
     end,
-  },
+  }
 }
+
