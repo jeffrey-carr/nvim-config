@@ -246,3 +246,14 @@ end
 if vim.g.jeff_enable_theme_hub then
   vim.keymap.set('n', '<leader>tt', ':ThemeHub<CR>', { desc = "Open Theme Hub" })
 end
+
+if vim.g.jeff_enable_gp then
+  vim.keymap.set('n', '<leader>oan', ':GpChatNew popup<CR>', { desc = "Start new GP chat" })
+  vim.keymap.set('n', '<leader>oap', ':GpChatPaste popup<CR>', { desc = "Paste current selection into chat" })
+  vim.keymap.set('n', '<leader>oat', ':GpChatToggle popup<CR>', { desc = "Toggle chat window" })
+  vim.keymap.set('n', '<leader>oaf', ':GpChatFinder<CR>', { desc = "Search through chats" })
+  vim.keymap.set('n', '<leader>oac', ':GpChatDelete<CR>', { desc = "Clear the current chat" })
+  vim.keymap.set('n', '<leader>oar', ':GpChatRespond<CR>', { desc = "Request a new response" })
+  vim.keymap.set('n', '<leader>oai', ':GpImage<CR>', { desc = "Generate new image" })
+  vim.keymap.set('n', '<leader>oaq', ':GpStop<CR>', { desc = "Stop all responses/jobs" })
+end
