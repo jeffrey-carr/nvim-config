@@ -257,3 +257,7 @@ if vim.g.jeff_enable_gp then
   vim.keymap.set('n', '<leader>oai', ':GpImage<CR>', { desc = "Generate new image" })
   vim.keymap.set('n', '<leader>oaq', ':GpStop<CR>', { desc = "Stop all responses/jobs" })
 end
+if vim.g.jeff_enable_structrue_go then
+  vim.keymap.set('n', '<leader>os', ':lua require("structrue-go").toggle()<CR>', { desc = "Toggle Structrue Go" })
+end
+

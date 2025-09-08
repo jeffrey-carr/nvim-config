@@ -4,7 +4,10 @@ end
 
 return {
   "erl-koenig/theme-hub.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "rktjmp/lush.nvim",
+  },
   config = function()
     require("theme-hub").setup({
       persistent = true,
