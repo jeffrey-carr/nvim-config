@@ -25,7 +25,7 @@ vim.g.jeff_enable_notify = default_enabled
 vim.g.jeff_enable_nvim_tree = default_enabled
 vim.g.jeff_enable_surround = default_enabled
 vim.g.jeff_enable_telescope = default_enabled
-vim.g.jeff_enable_themery = default_enabled
+vim.g.jeff_enable_themery = false
 vim.g.jeff_enable_treesitter = default_enabled
 vim.g.jeff_enable_trouble = default_enabled
 vim.g.jeff_enable_which_keys = default_enabled
@@ -33,6 +33,10 @@ vim.g.jeff_enable_windowswap = default_enabled
 vim.g.jeff_enable_treesitter_context = default_enabled
 vim.g.jeff_enable_grug_far = default_enabled
 vim.g.jeff_enable_theme_hub= default_enabled
+vim.g.jeff_enable_structrue_go = default_enabled
+vim.g.jeff_enable_dropbar = default_enabled
+vim.g.jeff_enable_smear = default_enabled
+vim.g.jeff_enable_satellite = default_enabled
 
 -- Enable/disable per profile
 if is_work then

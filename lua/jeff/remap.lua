@@ -246,3 +246,8 @@ end
 if vim.g.jeff_enable_theme_hub then
   vim.keymap.set('n', '<leader>tt', ':ThemeHub<CR>', { desc = "Open Theme Hub" })
 end
+
+if vim.g.jeff_enable_structrue_go then
+  vim.keymap.set('n', '<leader>os', ':lua require("structrue-go").toggle()<CR>', { desc = "Toggle Structrue Go" })
+end
+
