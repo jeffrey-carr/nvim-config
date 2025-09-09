@@ -4,5 +4,11 @@ end
 
 return {
   "sphamba/smear-cursor.nvim",
-  opts = { smear_between_neighbor_lines = false },
+  opts = {
+    min_horizontal_distance_smear = 5,
+    min_vertical_distance_smear = 5,
+    smear_to_cmd = false,
+    max_length = 15,
+    time_interval = 7,
+  },
 }

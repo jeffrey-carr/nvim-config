@@ -17,7 +17,6 @@ end
 vim.keymap.set('n', '<leader>cb', ':bd<CR>', { desc = "Close buffer" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
-vim.keymap.set('n', '<leader>rl', ':LspRestart<CR>', { desc = "Reload buffer from disk" })
 vim.keymap.set('n', '<leader>tc', function()
   vim.cmd('botright new')
   vim.cmd("resize " .. math.floor(vim.o.lines / 3)) -- resize to 1/3 of screen height
@@ -121,16 +120,6 @@ vim.keymap.set('n', '<leader>s', function()
   vim.cmd('wincmd l')
 end, { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
-vim.keymap.set('n', '<leader>bs', function()
-  -- If only one window, do nothing
-  if vim.fn.winnr('$') < 2 then
-    vim.notify("Only one window open.")
-    return
-  end
-
-  -- Close all but current window
-  vim.cmd('only')
-end, { desc = "Unsplits vertically split buffers into separate tabs" })
 
 -- Directory
 if vim.g.jeff_enable_dirbuf then
@@ -259,5 +248,21 @@ if vim.g.jeff_enable_gp then
 end
 if vim.g.jeff_enable_structrue_go then
   vim.keymap.set('n', '<leader>os', ':lua require("structrue-go").toggle()<CR>', { desc = "Toggle Structrue Go" })
+end
+
+if vim.g.jeff_enable_rest then
+  local ok = pcall(require, "plugins.scripts.http_adhoc")
+  if ok then
+    vim.keymap.set(
+      'n',
+      '<leader>rs',
+      ':HTTPAdhoc open<CR>',
+      { desc = "REST: Ad-hoc scratch" }
+    )
+  else
+    vim.notify("could not load adhoc", vim.log.levels.ERROR)
+  end
+  vim.keymap.set('n', '<leader>rr', ':Rest run<CR>', { desc = "Run REST command" })
+  vim.keymap.set('n', '<leader>rl', ':Rest last<CR>', { desc = "Run last REST command" })
 end
 

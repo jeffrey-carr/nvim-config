@@ -21,7 +21,7 @@ vim.g.jeff_enable_leap = default_enabled
 vim.g.jeff_enable_lsp = default_enabled
 vim.g.jeff_enable_mini = default_enabled
 vim.g.jeff_enable_none_ls = default_enabled
-vim.g.jeff_enable_notify = default_enabled
+vim.g.jeff_enable_notify = false
 vim.g.jeff_enable_nvim_tree = default_enabled
 vim.g.jeff_enable_surround = default_enabled
 vim.g.jeff_enable_telescope = default_enabled
@@ -38,6 +38,9 @@ vim.g.jeff_enable_structrue_go = default_enabled
 vim.g.jeff_enable_dropbar = default_enabled
 vim.g.jeff_enable_smear = default_enabled
 vim.g.jeff_enable_satellite = default_enabled
+vim.g.jeff_enable_rest = default_enabled
+vim.g.jeff_enable_luarocks = default_enabled
+vim.g.jeff_enable_snacks = default_enabled
 
 -- Enable/disable per profile
 if is_work then

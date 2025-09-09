@@ -3,6 +3,17 @@ if not vim.g.jeff_enable_lsp then
 end
 
 return {
+  -- Lazydev for neovim dev
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
   -- Mason core
   {
     "williamboman/mason.nvim",
@@ -84,10 +95,6 @@ return {
               settings = {
                 Lua = {
                   diagnostics = { globals = { "vim" } },
-                  workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
-                    checkThirdParty = false,
-                  },
                   telemetry = { enable = false },
                 },
               },
