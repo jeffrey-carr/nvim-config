@@ -266,3 +266,7 @@ if vim.g.jeff_enable_rest then
   vim.keymap.set('n', '<leader>rl', ':Rest last<CR>', { desc = "Run last REST command" })
 end
 
+if vim.g.jeff_enable_pineapple then
+  vim.keymap.set('n', '<leader>tt', '<cmd>Pineapple<CR>', { desc = "Open Pineapple" })
+end
+
