@@ -29,7 +29,6 @@ return {
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     config = function()
       local lspconfig = require("lspconfig")
-      local mlsp = require("mason-lspconfig")
 
       -- Optional: enhanced capabilities if you use nvim-cmp
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -76,7 +75,6 @@ return {
           "ts_ls",
           "zls",
           "marksman",
-          "ruff",
         },
         automatic_installation = true,
         handlers = {
@@ -111,27 +109,6 @@ return {
                   usePlaceholders = true,
                   completeUnimported = true,
                   analyses = { unusedparams = true },
-                },
-              },
-            })
-          end,
-
-          ["ruff"] = function()
-            local util = require("lspconfig.util")
-            lspconfig.ruff.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              root_dir = function(fname)
-                return util.root_pattern("pyproject.toml", "ruff.toml", ".ruff.toml", ".git")(fname)
-                  or util.path.dirname(fname)
-              end,
-              init_options = {
-                settings = {
-                  codeAction = {
-                    disableRuleComment = { enable = true, location = "separateLine" },
-                    fixViolation = { enable = true },
-                  },
-                  lint = { enable = true },
                 },
               },
             })

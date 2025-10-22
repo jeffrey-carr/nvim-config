@@ -33,20 +33,25 @@ vim.g.jeff_enable_windowswap = default_enabled
 vim.g.jeff_enable_treesitter_context = default_enabled
 vim.g.jeff_enable_grug_far = default_enabled
 vim.g.jeff_enable_theme_hub= false
-vim.g.jeff_enable_gp = default_enabled
+vim.g.jeff_enable_gp = false
 vim.g.jeff_enable_structrue_go = default_enabled
-vim.g.jeff_enable_dropbar = default_enabled
+vim.g.jeff_enable_dropbar = false
 vim.g.jeff_enable_smear = default_enabled
 vim.g.jeff_enable_satellite = default_enabled
-vim.g.jeff_enable_rest = default_enabled
+vim.g.jeff_enable_rest = false
 vim.g.jeff_enable_luarocks = default_enabled
 vim.g.jeff_enable_snacks = default_enabled
 vim.g.jeff_enable_pineapple = default_enabled
 vim.g.jeff_enable_hologram = default_enabled
+vim.g.jeff_enable_kulala = default_enabled
+vim.g.jeff_enable_obsidian = default_enabled
+vim.g.jeff_enable_sidekick = default_enabled
+vim.g.jeff_enable_lualine = default_enabled
+vim.g.jeff_enable_markview = default_enabled
 
 -- Enable/disable per profile
 if is_work then
-  vim.notify("Logged in as work.")
+  -- vim.notify("Logged in as work.")
 elseif is_home then
   vim.notify("Logged in as home. Happy coding :)")
 else

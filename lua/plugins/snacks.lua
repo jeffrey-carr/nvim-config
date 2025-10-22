@@ -8,8 +8,9 @@ return {
   lazy = false,
   opts = {
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    dashboard = { enabled = true, example = "github" },
     explorer = { enabled = false },
+    image = { enabled = false },
     indent = { enabled = true },
     input = { enabled = true },
     picker = { enabled = true },
@@ -17,8 +18,9 @@ return {
     quickfile = { enabled = true },
     rename = { enabled = true },
     scope = { enabled = true },
-    scroll = { enabled = true },
+    scroll = { enabled = false },
     statuscolumn = { enabled = true },
+    util = { enabled = true },
     words = { enabled = true },
   }
 }
