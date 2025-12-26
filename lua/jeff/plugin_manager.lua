@@ -31,12 +31,14 @@ vim.g.jeff_enable_smear = default_enabled
 vim.g.jeff_enable_satellite = default_enabled
 vim.g.jeff_enable_luarocks = default_enabled
 vim.g.jeff_enable_snacks = default_enabled
-vim.g.jeff_enable_pineapple = default_enabled
+vim.g.jeff_enable_pineapple = false
 vim.g.jeff_enable_markview = default_enabled
 vim.g.jeff_enable_go_testing = default_enabled
 vim.g.jeff_enable_gopher = default_enabled
 vim.g.jeff_enable_ai = default_enabled
 vim.g.jeff_enable_goto_preview = default_enabled
+vim.g.jeff_enable_cellular_automaton = default_enabled
+vim.g.jeff_enable_marks = default_enabled
 
 -- Enable/disable per profile
 if is_work then

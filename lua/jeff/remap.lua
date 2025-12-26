@@ -2,15 +2,92 @@
 vim.keymap.set('n', '<leader>cb', ':bd<CR>', { desc = "Close buffer" })
 vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set('i', '<M-BS>', '<C-w>', { noremap = true })
-vim.keymap.set('n', '<leader>tt', function()
-  vim.cmd('botright new')
-  vim.cmd("resize " .. math.floor(vim.o.lines / 3)) -- resize to 1/3 of screen height
-  vim.cmd('terminal')
-  vim.cmd('startinsert')
-end, { desc = "Toggle terminal" })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 vim.keymap.set('i', '<C-z>', '<C-o>u', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>rh', ':noh<CR>', { desc = "Remove search highlights" })
+
+local state = {
+  buf = -1,
+  floating = {
+    buf = -1,
+    win = -1,
+  },
+  bottom = {
+    buf = -1,
+    win = -1,
+  }
+}
+
+local function create_floating_window(opts)
+  opts = opts or {}
+  local width = opts.width or math.floor(vim.o.columns * 0.8)
+  local height = opts.height or math.floor(vim.o.lines * 0.8)
+
+  local col = math.floor((vim.o.columns - width) / 2)
+  local row = math.floor((vim.o.lines - height) / 2)
+
+  local buf = nil
+  if vim.api.nvim_buf_is_valid(opts.buf) then
+    buf = opts.buf
+  else
+    buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+  end
+
+  local win_config = {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = col,
+    row = row,
+    style = "minimal",
+    border = "rounded",
+  }
+
+  local win = vim.api.nvim_open_win(buf, true, win_config)
+  return { buf = buf, win = win }
+end
+
+local function toggle_terminal(location)
+  local cur = state[location]
+  if not cur then
+    vim.notify("Invalid terminal location: " .. tostring(location), vim.log.levels.ERROR)
+    return
+  end
+
+  if vim.api.nvim_win_is_valid(cur.win) then
+    vim.api.nvim_win_hide(cur.win)
+    state[location].win = -1
+    return
+  end
+
+  if location == "floating" then
+    local wininfo = create_floating_window({ buf = state.buf })
+    state.floating = wininfo
+    state.buf = wininfo.buf
+    cur = wininfo
+    if vim.bo[cur.buf].buftype ~= "terminal" then
+      vim.api.nvim_set_current_win(cur.win)
+      vim.cmd("terminal")
+      state.floating.buf = vim.api.nvim_get_current_buf()
+    end
+    vim.api.nvim_set_current_win(cur.win)
+    vim.cmd("startinsert")
+  elseif location == "bottom" then
+    -- Open terminal in a horizontal split at the bottom
+    vim.cmd("botright split")
+    vim.cmd("resize 15")
+    vim.cmd("terminal")
+    local win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_get_current_buf()
+    state.bottom = { win = win, buf = buf }
+    vim.cmd("startinsert")
+  end
+end
+
+vim.keymap.set({ "n", "t" }, "<leader>ttt", function() toggle_terminal("floating") end, { desc = "Toggle terminal" })
+vim.keymap.set({ "n", "t" }, "<leader>ttf", function() toggle_terminal("floating") end, { desc = "Toggle floating terminal" })
+vim.keymap.set({ "n", "t" }, "<leader>ttb", function() toggle_terminal("bottom") end, { desc = "Toggle bottom terminal" })
+
 
 -- Git
 local function copy_github_permalink()
@@ -55,74 +132,6 @@ vim.keymap.set('n', '<leader>s', function()
   vim.cmd('wincmd l')
 end, { desc = "Vertical split" })
 vim.keymap.set('n', '<leader>h', ':split<CR>', { desc = "Horizontal split " })
-
--- Testing
--- local function find_nearest_test_func()
---   local cursor = vim.api.nvim_win_get_cursor(0)[1]
---   local lines = vim.api.nvim_buf_get_lines(0, 0, cursor, false)
---   for i = #lines, 1, -1 do
---     local line = lines[i]
---     local name = line:match("^func%s+(Test%w+)")
---     if name then return name end
---   end
---   return nil
--- end
---
--- local function find_module_root()
---   local dir = vim.fn.expand("%:p:h")
---   while dir ~= "/" do
---     if vim.fn.filereadable(dir .. "/go.mod") == 1 then
---       return dir
---     end
---     dir = vim.fn.fnamemodify(dir, ":h")
---   end
---   return nil
--- end
---
--- local function get_go_import_path()
---   local file_path = vim.api.nvim_buf_get_name(0)
---   local file_dir = vim.fn.fnamemodify(file_path, ":h")
---   local mod_root = find_module_root()
---   if not mod_root then
---     error("Could not find go.mod root")
---   end
---
---   -- read module name from go.mod
---   local lines = vim.fn.readfile(mod_root .. "/go.mod")
---   local module_line = vim.tbl_filter(function(line)
---     return line:match("^module%s+")
---   end, lines)[1]
---
---   local mod_name = module_line:match("^module%s+(.+)")
---   if not mod_name then
---     error("Could not extract module name from go.mod")
---   end
---
---   -- compute relative path from module root to file directory
---   local rel_path = vim.fn.fnamemodify(file_dir, ":." .. mod_root)
---   return mod_name .. "/" .. rel_path, mod_root
--- end
---
--- local function run_nearest_go_test()
---   local test_func = find_nearest_test_func()
---   if not test_func then
---     vim.notify("No test function found above cursor.", vim.log.levels.ERROR)
---     return
---   end
---
---   local pkg_path, cwd = get_go_import_path()
---   local cmd = "go test -timeout 30s -run ^" .. test_func .. "$ " .. pkg_path
---
---   vim.cmd("vsplit")
---   vim.cmd("wincmd l")
---   local width = math.floor(vim.o.columns * 0.3)
---   vim.cmd("vertical resize " .. width)
---   local buf = vim.api.nvim_create_buf(false, true)
---   vim.api.nvim_win_set_buf(0, buf)
---
---   vim.fn.termopen(cmd)
--- end
--- vim.keymap.set("n", "<leader>rt", run_nearest_go_test, { desc = "Run the nearest test", noremap = true, silent = true })
 
 -- Folds all methods to their highest level (thanks Brian)
 vim.keymap.set("n", "zf0", function()
