@@ -30,6 +30,7 @@ return {
   {
     'spaceduck-theme/nvim',
     name = 'spaceduck',
+    branch = 'dev',
   },
   {
     'neanias/everforest-nvim',

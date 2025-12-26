@@ -4,7 +4,6 @@ return {
     "catppuccin/vim",
     "sainnhe/everforest",
     "rose-pine/neovim",
-    "pineapplegiant/spaceduck",
     "NLKNguyen/papercolor-theme",
-    "scottmckendry/cyberdream.nvim",
+    "pineapplegiant/spaceduck",
 }

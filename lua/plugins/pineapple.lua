@@ -10,4 +10,7 @@ return {
     colorschemeFile = "after/plugin/theme.lua",
   },
   cmd = "Pineapple",
+  init = function()
+    vim.keymap.set('n', '<leader>tt', '<cmd>Pineapple<CR>', { desc = "Open Pineapple" })
+  end
 }

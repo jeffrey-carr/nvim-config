@@ -5,12 +5,9 @@ end
 return {
   "ggandor/leap.nvim",
   dependencies = { "tpope/vim-repeat" },
+  opts = {},
   config = function()
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "*",
-      callback = function()
-        require("leap").add_default_mappings()
-      end
-    })
+    vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap)')
+    vim.keymap.set({'n', 'x', 'o'}, 'S',  '<Plug>(leap-backward)')
   end
 }

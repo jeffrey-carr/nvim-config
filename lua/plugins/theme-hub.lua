@@ -12,5 +12,7 @@ return {
     require("theme-hub").setup({
       persistent = true,
     })
+
+    vim.keymap.set('n', '<leader>th', ':ThemeHub<CR>', { desc = "Open Theme Hub" })
   end
 }

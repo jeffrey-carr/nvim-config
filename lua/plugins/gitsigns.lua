@@ -39,7 +39,18 @@ return {
       },
     },
     config = function(_, opts)
-      require("gitsigns").setup(opts)
+      local gitsigns = require("gitsigns")
+      gitsigns.setup(opts)
+
+      vim.keymap.set('n', '<leader>gbl', function()
+        gitsigns.blame_line()
+      end, { desc = "Git blame line" })
+      vim.keymap.set('n', '<leader>gbf', function()
+        gitsigns.blame_line({ full = true })
+      end, { desc = "Git blame line (full)" })
+      vim.keymap.set('n', '<leader>gd', function()
+        gitsigns.diffthis()
+      end, { desc = "Git diff" })
     end,
   },
 }

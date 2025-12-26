@@ -30,4 +30,8 @@ return {
       }
     }
   },
+  init = function()
+    vim.keymap.set('n', '<leader>oe', ':Trouble diagnostics<CR>', { desc = "Show Trouble diagnostics" })
+    vim.keymap.set('n', '<leader>ce', ':Trouble close<CR>', { desc = "Close Trouble diagnostics" })
+  end
 }

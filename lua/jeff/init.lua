@@ -1,3 +1,4 @@
+-- This is a comment
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 -- Required for nvim-tree
@@ -17,3 +18,4 @@ require("jeff.lazy_init")
 require("jeff.set")
 require("jeff.config_manager")
 require("jeff.remap")
+require("config.theme_tweaks")

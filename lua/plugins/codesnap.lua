@@ -14,5 +14,7 @@ return {
       bg_theme = 'sea',
       bg_padding = 0,
     })
+
+    vim.keymap.set('v', '<leader>cs', ':CodeSnap<CR>', { desc = "Take screenshot (CodeSnap)" })
   end
 }

@@ -4,4 +4,7 @@ end
 
 return {
   "elihunter173/dirbuf.nvim",
+  config = function()
+    vim.keymap.set('n', '<leader>db', ':Dirbuf<CR>', { desc = "Open directory buffer" })
+  end
 }
