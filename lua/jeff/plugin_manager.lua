@@ -1,5 +1,5 @@
 local git_email = vim.fn.system('git config --get user.email'):gsub('%s+', '')
-    vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
+vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
 local is_home = git_email == 'jeffrey.carr98@gmail.com'
 local is_work = git_email == 'jeff@getredcircle.com'
 
@@ -26,7 +26,7 @@ vim.g.jeff_enable_which_keys = default_enabled
 vim.g.jeff_enable_windowswap = default_enabled
 vim.g.jeff_enable_treesitter_context = default_enabled
 vim.g.jeff_enable_grug_far = default_enabled
-vim.g.jeff_enable_theme_hub= default_enabled
+vim.g.jeff_enable_theme_hub = default_enabled
 vim.g.jeff_enable_smear = default_enabled
 vim.g.jeff_enable_satellite = default_enabled
 vim.g.jeff_enable_luarocks = default_enabled
@@ -39,11 +39,13 @@ vim.g.jeff_enable_ai = default_enabled
 vim.g.jeff_enable_goto_preview = default_enabled
 vim.g.jeff_enable_cellular_automaton = default_enabled
 vim.g.jeff_enable_marks = default_enabled
+vim.g.jeff_enable_wakatime = false
 
 -- Enable/disable per profile
 if is_work then
   vim.notify("Logged in as work.")
 elseif is_home then
+  vim.g.jeff_enable_wakatime = true
   vim.notify("Logged in as home. Happy coding :)")
 else
   vim.notify("Not loggged in. AI agents disabled")
